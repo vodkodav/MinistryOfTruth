@@ -1,9 +1,6 @@
 <?php
   /**
-   * Created by PhpStorm.
-   * User: Sasha
-   * Date: 31.03.2015
-   * Time: 16:52
+   * Контроллер админки
    */
 
   class AdminController extends Controller {
@@ -28,11 +25,11 @@
      * то выводит форму новой новости
      */
     public function actionNew() {
-      if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-        //include __DIR__ . '/../../../view/news/new_record.inc.php';
-        $this->template =  __DIR__ . '/../../../view/news/new_record.inc.php';
-        if ($this->view->setContent($this->template)) {
-          $this->view->display();
+      if (filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING) !== 'POST') {
+        $template =  'news/new_record.php';
+        $view = new View();
+        if ($view->setContent($template)) {
+          $view->display();
         }
       } else {
         $this->actionAdd();

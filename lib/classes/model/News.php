@@ -21,7 +21,6 @@
       if ($this->saved) {
         return false;
       }
-
       $db      = new Database();
       // Фильтруем значения для запроса.
       // По хорошему, знчения должны фильтроваться в классе Database.
@@ -29,7 +28,6 @@
       $title   = $db->securedVal($this->title);
       $author  = $db->securedVal($this->author);
       $content = $db->securedVal($this->content);
-
       $query  = 'INSERT ';
       $query .= 'INTO news (date, title, author, content) ';
       $query .= "VALUES ({$date}, '{$title}', '{$author}', '{$content}')";
@@ -79,7 +77,7 @@
      * Метод получает из бд все новости и создавать новый объект типа News для каждой полученной новости.
      * В случае неудачи возвращает FALSE.
      */
-    public static function getAllRecords() {
+    public static function loadAllRecords() {
       $db = new Database();
       $all_records = $db->getAllRecords();
       foreach ($all_records as $record) {
@@ -91,6 +89,26 @@
       } else {
         return false;
       }
-
     }
+    
+    /*
+     * Метод возращает все созданные новости в виде массива ассоциативных массивов.
+     * Метод получает из бд все новости и помещает каждую новость в новый элемент массива.
+     * В случае неудачи возвращает FALSE.
+     */
+    public static function getAllRecords() {
+      $db = new Database();
+      $all_records = $db->getAllRecords();
+      foreach ($all_records as $record) {
+        foreach ($record as $property => $value) {
+          $item[$property] = $value;
+        }
+        $all_news[] = $item;
+      }
+      if (count($all_news) > 0) {
+        return $all_news;
+      } else {
+        return false;
+      }
+    }    
   }

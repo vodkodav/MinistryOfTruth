@@ -21,5 +21,8 @@
 
     } elseif (file_exists(__DIR__ . '/classes/view/' . $class_name . '.php')) {
       require __DIR__ . '/classes/view/' . $class_name . '.php';
+      
+    } elseif (file_exists(__DIR__ . '/classes/' . $class_name . '.php')) {
+      require __DIR__ . '/classes/' . $class_name . '.php';
     }
   }

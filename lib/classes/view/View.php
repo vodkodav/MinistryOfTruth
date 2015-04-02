@@ -1,35 +1,38 @@
 <?php
   /**
-   * Класс для вывода данных
+   * Класс отвечает за представление данных
    */
 
   class View  {
-    // Пути к шаблоном для вывода данных
+    // Путь к шаблонам
+    private $templatesPath;
+    
+    // Именя шаблонов для вывода данных
     private $header;
     private $body;
     private $footer;
 
     // Контент для вывода
-    private $display_content;
+    private $content;
 
     /*
      * Конструктором задаем значения по умолчанию
      */
     public function __construct() {
-      $this->header = __DIR__ . '/../../../view/header.inc.php';
-      //$this->setBody($body);
-      $this->footer = __DIR__ . '/../../../view/footer.inc.php';
-      //$this->display_content = $display_content;
+      $this->templatesPath = __DIR__ . '/../../templates/';
+      $this->header = $this->templatesPath . 'header.php';
+      $this->footer = $this->templatesPath . 'footer.php';
     }
 
     /*
      * Метод задает значение body.
-     * В качетве аргумента принимает путь к файлу-шаблону.
-     * Если путь существует, утанавливает путь свойству body и возращает TRUE, иначе возвращает FALSE
+     * В качетве аргумента принимает имя шаблона.
+     * Если путь к файлу существует, утанавливает body и возращает TRUE, иначе возвращает FALSE
      */
-    private function setBody($path) {
-      if (file_exists($path)) {
-        $this->body = $path;
+    private function setBody($template) {
+      $template = $this->templatesPath . $template;
+      if (file_exists($template)) {
+        $this->body = $template;
         return true;
       } else {
         return false;
@@ -42,18 +45,18 @@
      * На случай, если шаблону не требуется данные, парметр display_content - не обязательный.
      * Возвращает TRUE в случае успеха или FALSE в случае провала.
      */
-    public function setContent($template, $display_content = null) {
+    public function setContent($template, $content = null) {
       if ($this->setBody($template)) {
-        $this->display_content = $display_content;
+        $this->content = $content;
         return true;
       } else {
         return false;
       }
-
     }
+    
     /*
-     * Метод выводит данные в браузер.
-     *
+     * Метод для вывода представления.
+     * Возвращает TRUE в случае успеха или FALSE в случае провала.
      */
     public function display() {
       if ($this->body) {

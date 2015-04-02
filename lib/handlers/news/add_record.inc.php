@@ -4,7 +4,7 @@
    */
 
   // Если форма отправлена
-  if (isset($_POST['submit'])) {
+  //if (isset($_POST['submit'])) {
     // Получаем данные из формы
     $author  = trim(filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING));
     $title   = trim(filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING));
@@ -24,4 +24,4 @@
     }
     // Сохраняем новость в БД
     $new_record->saveRecord();
-  }
+  //}
