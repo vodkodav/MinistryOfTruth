@@ -8,6 +8,10 @@
     // По умолчанию новость считается не сохраненной.
     private $saved = false;
     
+    // Таблица БД предназначенная для хранения данных данной модели
+    private static $dbTable = 'news';
+
+
     /*
      * В конструкторе вызываем конструктор родительского класса и 
      * задаем таблицу БД с которой будем работать.
@@ -28,7 +32,7 @@
       if ($this->saved) {
         return false;
       }
-      $db      = new Database();
+      $db      = new Database(self::$dbTable);
       // Фильтруем значения для запроса.
       $date    = (int) $this->date;
       $title   = $db->securedVal($this->title);
@@ -51,9 +55,8 @@
      * Возвращает стандартный объект в случае успеха, либо FALSE в случае провала.
      */
     private function getRecord($id) {
-      $db = new Database();
-      $record = $db->getRecord($id);
-      if ($record) {
+      $db = new Database(self::$dbTable);
+      if ($record = $db->getRecord($id)) {
         return $record;
       } else {
         return false;
@@ -68,8 +71,7 @@
      * либо возвращает FALSE в случае провала.
      */
     public function loadRecord($id) {
-      $record = $this->getRecord($id);
-      if ($record) {
+      if ($record = $this->getRecord($id)) {
         foreach ($record as $field => $value) {
           $this->$field = $value;
         }
@@ -86,7 +88,7 @@
      * В случае неудачи возвращает FALSE.
      */
     public static function loadAllRecords() {
-      $db = new Database();
+      $db = new Database(self::$dbTable);
       $allRecords = $db->getAllRecords();
       foreach ($allRecords as $record) {
         $all_news["{$record->id}"] = new News();
@@ -105,7 +107,7 @@
      * В случае неудачи возвращает FALSE.
      */
     public static function getAllRecords() {
-      $db = new Database();
+      $db = new Database(self::$dbTable);
       $allRecords = $db->getAllRecords();
       foreach ($allRecords as $record) {
         foreach ($record as $property => $value) {

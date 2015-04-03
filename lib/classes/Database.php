@@ -19,15 +19,14 @@
      * В качестве аргументов принимает параметры соеденения,
      * если параметры не заданы, то использует параметры по умолчанию.
      */
-    function __construct($host = 'localhost', $user = 'news', $password = 'news', $base = 'news', $table = 'news') {
-      // Пока будем создавать подключение к тестовой БД, в будущем нужно будет добавить получение
-      // конфигураци из файла.
+    function __construct($table) {
+      require_once __DIR__ . '/../config.inc.php';
 
-      $this->conn = mysql_connect($host, $user, $password)
+      $this->conn = mysql_connect(DB_HOST, DB_USER, DB_PASS)
         // Если подключение не удалось, то нет смысла продолжат выполение скрипта
         or die(mysqli_connect_error());
 
-      mysql_select_db($base, $this->conn);
+      mysql_select_db(DB_BASE, $this->conn);
       $this->table = $table;
     }
 
