@@ -1,14 +1,10 @@
 <?php
 	/**
 	 * Класс отвечает за подключение и работу с БД.
-   * По хорошему нужно сделать, чтобы конфиг по умолчанию инклюдился из какого-нибудь файла конфигурации.
 	 */
 
   class Database {
-    // Параметры подключения к БД
-
-    // Таблица БД c которой работает объект работает по умолчанию.
-    // Если не заданно другое значение, то работает с таблицей news.
+    // Таблица БД c которой работает объект
     private $table = '';
 
     // Само подклюение к БД
@@ -34,7 +30,7 @@
      * Методом можно переопределить таблицу с которой работает БД
      */
     public function setTable($tableName) {
-      $this->table = mysql_real_escape_string($tableName);
+      $this->table = securedVal($tableName);
     }
 
     /*
@@ -43,7 +39,7 @@
      * возвращает его в виде строки подготовленно для использования в SQL-запросе.
      */
     public function securedVal($value) {
-      return mysql_real_escape_string((string) $value, $this->conn);
+      return trim(mysql_real_escape_string((string) $value, $this->conn));
     }
 
     /*
