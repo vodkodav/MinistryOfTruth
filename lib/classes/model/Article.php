@@ -1,11 +1,11 @@
 <?php
   /**
    * Класс служит для наследования от него объекто типа Статья.
-   * По хорошему, нужно добавить валидацию данных.
    */
 
   abstract class Article {
     // Инициализация свойств
+    protected $id;            // id статиь в БД
     protected $author;        // Автор статьи
     protected $title;         // Заголовок статьи
     protected $content;       // Содержание статьи
@@ -13,12 +13,8 @@
 
     /*
      * Конструктор задает значения свойств.
-     * Если пользовательское значение не переданно, то устанавливается значение по умолчанию.
      */
-    function __construct( $content = 'Большой Брат следит за тобой!',
-                          $title   = 'Памятка гражданину Океании',
-                          $author  = 'Министерство Правды',
-                          $date    = null ) {
+    function __construct($content, $title, $author, $date) {
       $this->author = $author;
       $this->title = $title;
       $this->content = $content;

@@ -1,16 +1,23 @@
 <?php
   /**
-   * Класс описывает объект типа "Новость",
-   * расширяет класс Статьи.
+   * Класс описывает модель новостей
    */
 
   class News extends Article {
-    // К свойствам Статей добавляем идентификатор новости
-    private $id;
-
     // Свойсто saved показывает, была ли новость сохранена в БД.
     // По умолчанию новость считается не сохраненной.
     private $saved = false;
+    
+    /*
+     * В конструкторе вызываем конструктор родительского класса и 
+     * задаем таблицу БД с которой будем работать.
+     */
+    public function __construct( $content = 'Большой Брат следит за тобой!',
+                                 $title   = 'Памятка гражданину Океании',
+                                 $author  = 'Министерство Правды',
+                                 $date    = null) {
+      parent::__construct($content, $title, $author, $date);
+    }
 
     /*
      * Метод пытается сохраняет новость в БД.
@@ -23,7 +30,6 @@
       }
       $db      = new Database();
       // Фильтруем значения для запроса.
-      // По хорошему, знчения должны фильтроваться в классе Database.
       $date    = (int) $this->date;
       $title   = $db->securedVal($this->title);
       $author  = $db->securedVal($this->author);
@@ -46,7 +52,8 @@
      */
     private function getRecord($id) {
       $db = new Database();
-      if ($record = $db->getRecord($id)) {
+      $record = $db->getRecord($id);
+      if ($record) {
         return $record;
       } else {
         return false;
@@ -61,7 +68,8 @@
      * либо возвращает FALSE в случае провала.
      */
     public function loadRecord($id) {
-      if ($record = $this->getRecord($id)) {
+      $record = $this->getRecord($id);
+      if ($record) {
         foreach ($record as $field => $value) {
           $this->$field = $value;
         }
@@ -79,13 +87,13 @@
      */
     public static function loadAllRecords() {
       $db = new Database();
-      $all_records = $db->getAllRecords();
-      foreach ($all_records as $record) {
+      $allRecords = $db->getAllRecords();
+      foreach ($allRecords as $record) {
         $all_news["{$record->id}"] = new News();
         $all_news["{$record->id}"]->loadRecord($record->id);
       }
-      if (count($all_news) > 0) {
-        return $all_news;
+      if (count($allNews) > 0) {
+        return $allNews;
       } else {
         return false;
       }
@@ -98,15 +106,15 @@
      */
     public static function getAllRecords() {
       $db = new Database();
-      $all_records = $db->getAllRecords();
-      foreach ($all_records as $record) {
+      $allRecords = $db->getAllRecords();
+      foreach ($allRecords as $record) {
         foreach ($record as $property => $value) {
           $item[$property] = $value;
         }
-        $all_news[] = $item;
+        $allNews[] = $item;
       }
-      if (count($all_news) > 0) {
-        return $all_news;
+      if (count($allNews) > 0) {
+        return $allNews;
       } else {
         return false;
       }

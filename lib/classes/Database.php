@@ -34,8 +34,8 @@
     /*
      * Методом можно переопределить таблицу с которой работает БД
      */
-    public function setTable($table_name) {
-      $this->table = mysql_real_escape_string($table_name);
+    public function setTable($tableName) {
+      $this->table = mysql_real_escape_string($tableName);
     }
 
     /*
