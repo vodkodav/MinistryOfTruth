@@ -51,25 +51,44 @@
     }
 
     /*
-     * Метод для вывода представления.
-     * Возвращает TRUE в случае успеха или FALSE в случае провала.
+     * Метод создает страницу представления и записывает в буфер.
+     * Возвращает содержимое бефера в случае успеха или FALSE в случае провала.
      */
-    public function display() {
+    private function render() {
       if ($this->body) {
         // Готовим контент к выводу
         foreach ($this->content as $key => $value) {
           $$key = $value;
         }
+        // Начинаем буферизацию
+        ob_start();
         // Выводим все шаблоны
         include $this->header;
         include $this->body;
         include $this->footer;
-        return true;
+        // Сохраняем буфер в переменную
+        $render = ob_get_contents();
+        // Заканчиваем буферизиацию 
+        ob_end_clean();
+        return $render;
+      } else {
+        return false;
+      }
+    }
+    
+    /*
+     * Метод выводит данные.
+     * Выводит данные в случае успеха или возвращает FALSE в случае провала.
+     */
+    public function display() {
+      if ($render = $this->render()) {
+        echo $render;
       } else {
         return false;
       }
     }
 
+    // Реализация методов интерфейса Iterator
     public function current() {
       return current($this->content);
     }
