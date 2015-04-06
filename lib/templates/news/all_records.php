@@ -8,7 +8,7 @@
 <ul>
   <?php foreach ($this->content as $record): ?>
     <li>
-      <?=  date('d-m-Y H:i', $record['date']) ?>
+      <?= date('d-m-Y H:i', $record['date']) ?>
       <a href="/index.php?page=news&action=view&record=<?= $record['id'] ?>">
         <?= htmlentities($record['title']) ?>
       </a>

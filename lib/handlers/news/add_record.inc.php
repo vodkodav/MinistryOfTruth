@@ -1,11 +1,9 @@
 <?php
   /**
-   * Обработчик формы view/new_record.inc.php
+   * Обработчик формы news/new_record.php
+   * Возможно для обработчиков нужен новый класс?
    */
 
-  // Если форма отправлена
-  //if (isset($_POST['submit'])) {
-    // Получаем данные из формы
     $author  = trim(filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING));
     $title   = trim(filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING));
     $content = trim(filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING));
@@ -24,4 +22,3 @@
     }
     // Сохраняем новость в БД
     $new_record->saveRecord();
-  //}
