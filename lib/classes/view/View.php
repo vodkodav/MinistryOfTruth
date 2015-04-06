@@ -3,7 +3,7 @@
    * Класс отвечает за представление данных
    */
 
-  class View  {
+  class View implements Iterator {
     // Путь к шаблонам
     private $templatesPath;
     
@@ -68,5 +68,25 @@
       } else {
         return false;
       }
+    }
+
+    public function current() {
+      return current($this->content);
+    }
+
+    public function key() {
+      return key($this->content);
+    }
+
+    public function next() {
+      return next($this->content);
+    }
+
+    public function rewind() {
+      return reset($this->content);
+    }
+
+    public function valid() {
+      return isset($this->array[$this->key()]);
     }
   }
