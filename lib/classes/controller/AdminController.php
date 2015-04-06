@@ -26,9 +26,7 @@
      */
     public function actionNew() {
       if (filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING) !== 'POST') {
-        $template =  'news/new_record.php';
-        $view = new View();
-        if ($view->setContent($template)) {
+        if ($view = new View('news/new_record.php')) {
           $view->display();
         }
       } else {

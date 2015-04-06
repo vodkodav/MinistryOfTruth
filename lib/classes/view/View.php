@@ -18,10 +18,12 @@
     /*
      * Конструктором задаем значения по умолчанию
      */
-    public function __construct() {
+    public function __construct($template) {
       $this->templatesPath = __DIR__ . '/../../templates/';
       $this->header = $this->templatesPath . 'header.php';
       $this->footer = $this->templatesPath . 'footer.php';
+      $this->setBody($template)
+        or die('Не удалось задать шаблон.');
     }
 
     /*
@@ -41,12 +43,11 @@
 
     /*
      * Метод задает контент для отображения.
-     * В качестве аргументов принимает адрес шаблона и данные для заполнения шаблона.
-     * На случай, если шаблону не требуется данные, парметр display_content - не обязательный.
+     * В качестве аргументов принимает данные для заполнения шаблона.     * 
      * Возвращает TRUE в случае успеха или FALSE в случае провала.
      */
-    public function setContent($template, $content = null) {
-      if ($this->setBody($template)) {
+    public function setContent($content) {
+      if (!empty($content)) {
         $this->content = $content;
         return true;
       } else {
@@ -59,7 +60,7 @@
      * Возвращает TRUE в случае успеха или FALSE в случае провала.
      */
     public function display() {
-      if ($this->body) {
+      if ($this->body) {        // Можно вызвать только если задан body
         include $this->header;
         include $this->body;
         include $this->footer;

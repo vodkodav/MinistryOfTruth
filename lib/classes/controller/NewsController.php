@@ -22,9 +22,8 @@
      */
     private function actionViewAll() {
       if ($displayContent = News::getAllRecords()) {
-        $template = 'news/all_records.php';
-        $view = new View();
-        if ($view->setContent($template, $displayContent)) {
+        $view = new View('news/all_records.php');
+        if ($view->setContent($displayContent)) {
           $view->display();
           return true;
         }
@@ -44,9 +43,8 @@
         // Если запрошенная новость существует, то выводим ее
         if ( $record->loadRecord(filter_input(INPUT_GET, 'record', FILTER_SANITIZE_NUMBER_INT)) ) {
           $displayContent = $record->getArticle();
-          $template = 'news/single_record.php';
-          $view = new View();
-          if ($view->setContent($template, $displayContent)) {
+          $view = new View('news/single_record.php');
+          if ($view->setContent($displayContent)) {
             $view->display();
             return true;
           }
