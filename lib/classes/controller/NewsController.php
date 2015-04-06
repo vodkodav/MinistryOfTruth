@@ -21,12 +21,11 @@
      * Возвращает TRUE в случае успеха или FALSE в случае провала.
      */
     private function actionViewAll() {
+      $view = new View('news/all_records.php');
       if ($displayContent = News::getAllRecords()) {
-        $view = new View('news/all_records.php');
-        if ($view->setContent($displayContent)) {
-          $view->display();
-          return true;
-        }
+        $view->allItems = $displayContent;
+        $view->display();
+        return true;
       } else {
         return false;
       }
@@ -42,12 +41,10 @@
         $record = new News();
         // Если запрошенная новость существует, то выводим ее
         if ( $record->loadRecord(filter_input(INPUT_GET, 'record', FILTER_SANITIZE_NUMBER_INT)) ) {
-          $displayContent = $record->getArticle();
           $view = new View('news/single_record.php');
-          if ($view->setContent($displayContent)) {
-            $view->display();
-            return true;
-          }
+          $view->item = $record->getArticle();
+          $view->display();
+          return true;          
         }
       }
       // Если не удалось получить запрошенную новость, то выводим все новости

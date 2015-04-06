@@ -13,7 +13,7 @@
     private $footer;
 
     // Контент для вывода
-    private $content;
+    private $content = array();
 
     /*
      * Конструктором задаем значения по умолчанию
@@ -26,6 +26,15 @@
         or die('Не удалось задать шаблон.');
     }
 
+    /*
+     * Метод вызывается при попытке установить значение неопределеного свойства.
+     * Метод получает в качестве аргументов имя свойства (key) и значение свойста (value).
+     * Метод добавляет в массив content новый элемент с ключем key и значением value. 
+     */
+    public function __set($key, $value) {
+      $this->content[$key] = $value;
+    }
+    
     /*
      * Метод задает значение body.
      * В качетве аргумента принимает имя шаблона.
@@ -41,26 +50,31 @@
       }
     }
 
-    /*
-     * Метод задает контент для отображения.
-     * В качестве аргументов принимает данные для заполнения шаблона.     * 
-     * Возвращает TRUE в случае успеха или FALSE в случае провала.
-     */
-    public function setContent($content) {
-      if (!empty($content)) {
-        $this->content = $content;
-        return true;
-      } else {
-        return false;
-      }
-    }
+//    /*
+//     * Метод задает контент для отображения.
+//     * В качестве аргументов принимает данные для заполнения шаблона.     * 
+//     * Возвращает TRUE в случае успеха или FALSE в случае провала.
+//     */
+//    public function setContent($content) {
+//      if (!empty($content)) {
+//        $this->content = $content;
+//        return true;
+//      } else {
+//        return false;
+//      }
+//    }
     
     /*
      * Метод для вывода представления.
      * Возвращает TRUE в случае успеха или FALSE в случае провала.
      */
     public function display() {
-      if ($this->body) {        // Можно вызвать только если задан body
+      if ($this->body) {
+        // Готовим контент к выводу
+        foreach ($this->content as $key => $value) {
+          $$key = $value;
+        }
+        // Выводим все шаблоны
         include $this->header;
         include $this->body;
         include $this->footer;
