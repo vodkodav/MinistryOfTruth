@@ -22,8 +22,8 @@
      */
     private function actionViewAll() {
       $view = new View('news/all_records.php');
-      if ($displayContent = News::getAllRecords()) {
-        $view->allItems = $displayContent;
+      if ($allRecords = NewsModel::findAll()) {
+        $view->allItems = $allRecords;
         $view->display();
         return true;
       } else {
@@ -37,12 +37,11 @@
      */
     public function actionView() {
       // Если id передан, то запарашиваем страницу конкретной новости
-      if (isset($_GET['record'])) {
-        $record = new News();
+      if (isset($_GET['record'])) {        
         // Если запрошенная новость существует, то выводим ее
-        if ( $record->loadRecord(filter_input(INPUT_GET, 'record', FILTER_SANITIZE_NUMBER_INT)) ) {
+        if ( $record = NewsModel::findById(filter_input(INPUT_GET, 'record', FILTER_SANITIZE_NUMBER_INT)) ) {
           $view = new View('news/single_record.php');
-          $view->item = $record->getArticle();
+          $view->item = $record;
           $view->display();
           return true;          
         }

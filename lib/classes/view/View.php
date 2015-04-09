@@ -3,8 +3,9 @@
    * Класс отвечает за представление данных
    */
 
-  class View implements Iterator {
+  class View{
     // Путь к шаблонам
+    // По хорошему, должен быть статическим
     private $templatesPath;
     
     // Именя шаблонов для вывода данных
@@ -86,26 +87,5 @@
       } else {
         return false;
       }
-    }
-
-    // Реализация методов интерфейса Iterator
-    public function current() {
-      return current($this->content);
-    }
-
-    public function key() {
-      return key($this->content);
-    }
-
-    public function next() {
-      return next($this->content);
-    }
-
-    public function rewind() {
-      return reset($this->content);
-    }
-
-    public function valid() {
-      return isset($this->array[$this->key()]);
     }
   }
