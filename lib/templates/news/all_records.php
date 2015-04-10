@@ -3,7 +3,10 @@
    * Шаблон для вывода всех новостей
    */
 ?>
-<p><a href="/index.php?page=admin&action=new">Добавить новость</a></p>
+<p>
+  <a href="/index.php?page=admin&action=new">Добавить новость</a>
+  <a href="/index.php?page=admin&action=viewlog">Журнал событий</a>
+</p>
 <hr>
 <ul>
   <?php foreach ($allItems as $record): ?>

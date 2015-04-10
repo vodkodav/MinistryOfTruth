@@ -23,12 +23,19 @@
       //debug($newRecord);
       //debug(isset($newRecord->content));
       //debug(empty($newRecord->content));
-      
       if (!empty($newRecord->content)) {
-        $newRecord->save();
+        try {
+          $newRecord->save();
+        } catch (E403Exception $e) {
+          $view = new View('error.php');
+          $view->addHeader($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
+          $view->message = $e->getMessage();
+          $view->display();
+        }
       }
       // После обработки формы перенаправляем на главную страницу
       header('Location: index.php');
+      exit;
     }
 
     /*
@@ -37,9 +44,8 @@
      */
     public function actionNew() {
       if (filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING) !== 'POST') {
-        if ($view = new View('news/new_record.php')) {
-          $view->display();
-        }
+        $view = new View('news/new_record.php');
+        $view->display();
       } else {
         $this->actionSave();
       }
@@ -48,26 +54,47 @@
     public function actionDel() {
       if (isset($_GET['record'])) {        
         // Если запрошенная новость существует, то удаляем ее
-        if ( $record = NewsModel::findById(filter_input(INPUT_GET, 'record', FILTER_SANITIZE_NUMBER_INT)) ) {
-          $record->delete();
-        }  
+        try {
+          $record = NewsModel::findById(filter_input(INPUT_GET, 'record', FILTER_SANITIZE_NUMBER_INT));
+        } catch (E403Exception $e) {
+          $view = new View('error.php');
+          $view->addHeader($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
+          $view->message = $e->getMessage();
+          $view->display();
+        } 
+        $record->delete();
       }
       // После выполнения действия перенаправляем на главную страницу
       header('Location: index.php');
+      exit;
     }
     
     public function actionEdit() {
       if (filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING) !== 'POST') {
-        if (isset($_GET['record'])) {        
+        if (isset($_GET['record'])) {
           // Если запрошенная новость существует, то выводим форму редактирования
-          if ( $record = NewsModel::findById(filter_input(INPUT_GET, 'record', FILTER_SANITIZE_NUMBER_INT)) ) {
-            $view = new View('news/edit_record.php');
-            $view->item = $record;
-            $view->display();    
+          try { 
+            $record = NewsModel::findById(filter_input(INPUT_GET, 'record', FILTER_SANITIZE_NUMBER_INT));
+          } catch (E403Exception $e) {
+            $view = new View('error.php');
+            $view->addHeader($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
+            $view->message = $e->getMessage();
+            $view->display();
           }
-        }
+          $view = new View('news/edit_record.php');
+          $view->item = $record;
+          $view->display();    
+        } 
       } else {
         $this->actionSave();
       }
+    }
+    
+    public function actionViewLog() {
+      $view = new View('events.php');
+      $log = new Logger;
+      //debug($log->readAllEvents());
+      $view->events = $log->readAllEvents();
+      $view->display();
     }
   }

@@ -23,4 +23,4 @@
   // Конец отладочного кода
   
   // Вызываем основной контроллер
-	require_once 'lib/controller.inc.php';
+	require_once __DIR__ . '/lib/front_controller.inc.php';

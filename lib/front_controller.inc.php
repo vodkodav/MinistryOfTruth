@@ -29,13 +29,19 @@
    * то устанавлиеваем его значение в переменную $action, иначе присваиваем значение по умолчанию.   *
    */
   if ( isset($_GET['action'])
-        //and method_exists($controller , 'action' . filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING)) ) {
         and is_callable(array($controller , 'action' . filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING))) ) {
     $action = 'action' . filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
   } else {
     $action = 'actionDefault';
   }
 
-  // Выполняем действие
-  $controller->$action();
+  try {
+    $controller->$action();
+  } catch (E404Ecxeption $e) {
+    $view = new View('error.php');
+    $view->addHeader($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+    $view->message = $e->getMessage();
+    $view->display();
+  }
+  
 

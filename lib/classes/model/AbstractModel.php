@@ -45,6 +45,10 @@
       $db = new Database;
       $db->setClassName(get_called_class());
       $sql = 'SELECT * FROM ' . static::$table;
+//      $allRecods = $db->query($sql);
+//      if (!$allRecods) {
+//        throw new E404Ecxeption('Не удается получить список новостей.');
+//      }
       return $db->query($sql);
     }
  
@@ -52,7 +56,11 @@
       $db = new Database;
       $db->setClassName(get_called_class());
       $sql = 'SELECT * FROM ' . static::$table . ' WHERE id=:id';
-      $params[':id'] = $id; 
+      $params[':id'] = $id;
+//      $record = $db->query($sql, $params)[0];
+//      if (!$record) {
+//        throw new E404Ecxeption('Не удается найти новость.');
+//      }
       return $db->query($sql, $params)[0];
     }
     
@@ -61,6 +69,10 @@
       $db->setClassName(get_called_class());
       $sql = 'SELECT * FROM ' . static::$table . ' WHERE ' . $column . ' = :'. $column;
       $params[":{$column}"] = $value;
+//      $record = $db->query($sql, $params);
+//      if (!$record) {
+//        throw new E404Ecxeption('Не удается найти новость.');
+//      }
       return $db->query($sql, $params);
     }
     
@@ -107,12 +119,12 @@
     public function delete() {
       $db = new Database;
       $sql = 'DELETE FROM ' . static::$table . ' WHERE id = :id';
-      $params[':id'] = $this->fields['id'];
+      $params[':id'] = $this->id;
       $db->exec($sql, $params);
     }
     
     public function save() {
-      if (isset($this->fields['id'])) {
+      if (isset($this->id)) {
         //die('update');
         $this->update();
       } else {

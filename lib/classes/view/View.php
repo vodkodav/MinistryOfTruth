@@ -8,6 +8,9 @@
     // По хорошему, должен быть статическим
     private $templatesPath;
     
+    // Дополнительные http headers
+    private $httpHeaders = array();
+
     // Именя шаблонов для вывода данных
     private $header;
     private $body;
@@ -23,8 +26,7 @@
       $this->templatesPath = __DIR__ . '/../../templates/';
       $this->header = $this->templatesPath . 'header.php';
       $this->footer = $this->templatesPath . 'footer.php';
-      $this->setBody($template)
-        or die('Не удалось задать шаблон.');
+      $this->setBody($template);
     }
 
     /*
@@ -34,6 +36,10 @@
      */
     public function __set($key, $value) {
       $this->content[$key] = $value;
+    }
+    
+    public function __get($key) {
+      return $this->content[$key];
     }
     
     /*
@@ -51,6 +57,10 @@
       }
     }
 
+    public function addHeader($header) {
+      $this->httpHeaders[] = (string) $header;
+    }
+    
     /*
      * Метод создает страницу представления и записывает в буфер.
      * Возвращает содержимое бефера в случае успеха или FALSE в случае провала.
@@ -63,6 +73,12 @@
         }
         // Начинаем буферизацию
         ob_start();
+        // Если заданы дополнительные headers, то сначала посылаем их
+        if (!empty($this->httpHeaders)) {
+          foreach ($this->httpHeaders as $httpHeader) {
+            header($httpHeader);
+          }
+        }
         // Выводим все шаблоны
         include $this->header;
         include $this->body;
@@ -84,6 +100,7 @@
     public function display() {
       if ($render = $this->render()) {
         echo $render;
+        exit;
       } else {
         return false;
       }
