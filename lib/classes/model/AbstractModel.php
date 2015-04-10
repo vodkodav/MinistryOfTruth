@@ -88,6 +88,10 @@
       $names = array();
       $params = array();
       foreach ($this->fields as $name => $value) {
+        //echo $name, '<br>';
+        if ('id' == $name) {
+          continue;
+        }
         $names[] = $name;
         $params[":{$name}"] = $value;
       }
@@ -96,7 +100,7 @@
         $sql .= $name . ' = :' . $name;
         $sql .= ($names) ? ', ' : ' ' ;
       }
-      $sql .= 'WHERE id = ' . $params[':id'];
+      $sql .= 'WHERE id = ' . $this->id;
       $this->id = $db->exec($sql, $params);
     }
     

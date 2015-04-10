@@ -17,6 +17,8 @@
 //  //debug($var);
 //  $var->save();
 //  $var = NewsModel::findById(31);
+//  
+//  $var = NewsModel::findByColumn('title', 'Объявление');
 //  debug($var);
   // Конец отладочного кода
   
