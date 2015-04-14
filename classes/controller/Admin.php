@@ -1,10 +1,11 @@
 <?php
-  /**
-   * Контроллер админки
-   * нужно добавить свойста содержащие REQUEST_METHOD
-   */
+  namespace App\Classes\Controller;
+  use App\Classes\Model\News as NewsModel;
+  use App\Classes\View as View;
+  use App\Classes\E403Exception as E403Exception;
+  use App\Classes\Logger as Logger;
 
-  class AdminController extends Controller {
+  class Admin extends Main {
     /*
      * Метод просто вызывает actionNew
      */

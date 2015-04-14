@@ -1,7 +1,5 @@
 <?php
-  /**
-   * Класс отвечает за представление данных
-   */
+	namespace App\Classes;
 
   class View{
     // Путь к шаблонам
@@ -23,7 +21,7 @@
      * Конструктором задаем значения по умолчанию
      */
     public function __construct($template) {
-      $this->templatesPath = __DIR__ . '/../../templates/';
+      $this->templatesPath = __DIR__ . '/../templates/';
       $this->header = $this->templatesPath . 'header.php';
       $this->footer = $this->templatesPath . 'footer.php';
       $this->setBody($template);

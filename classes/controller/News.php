@@ -1,9 +1,11 @@
 <?php
-  /**
-   * Контроллер новостей
-   */
+  namespace App\Classes\Controller;
+  use App\Classes\Model\News as NewsModel;
+  use App\Classes\View as View;
+  use App\Classes\E403Exception as E403Exception;
+  use App\Classes\E404Ecxeption as E404Ecxeption;
 
-  class NewsController extends Controller {
+  class News extends Main {
     /*
      * Метод выполняет действие данного контроллера принятое по умолчанию
      * Возвращает TRUE в случае успеха или FALSE в случае провала.

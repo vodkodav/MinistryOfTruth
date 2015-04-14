@@ -1,25 +1,14 @@
 <?php
-  /**
-   * Класс описывает абстрактную модель данных нашего сайта.
-   */
+  namespace App\Classes\Model;
+  use App\Classes\Database as Database;
 
-  abstract class AbstractModel implements Iterator{
-//    // Инициализация свойств
-//    protected $id;            // id статиь в БД
-//    protected $author;        // Автор статьи
-//    protected $title;         // Заголовок статьи
-//    protected $content;       // Содержание статьи
-//    protected $date;          // Дата создания статьи
-
+  abstract class Main implements \Iterator{
     // Массив содержит свойства объекта
     protected $fields = array();
     
     // Таблица БД содержащая данные модели
     protected static $table = '';
 
-    /*
-     * Геттер и сеттер для неопределенных свойств объекта
-     */
     public function __set($name, $value) {
       $this->fields["{$name}"] = $value;
     }

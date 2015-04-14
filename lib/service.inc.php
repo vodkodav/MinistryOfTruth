@@ -12,17 +12,24 @@
   }
 
   // Функция для автоматической загрузки классов
-  function __autoload($class_name) {
-    if (file_exists(__DIR__ . '/classes/controller/' . $class_name . '.php')) {
-      require __DIR__ . '/classes/controller/' . $class_name . '.php';
-
-    } elseif (file_exists(__DIR__ . '/classes/model/' . $class_name . '.php')) {
-      require __DIR__ . '/classes/model/' . $class_name . '.php';
-
-    } elseif (file_exists(__DIR__ . '/classes/view/' . $class_name . '.php')) {
-      require __DIR__ . '/classes/view/' . $class_name . '.php';
-      
-    } elseif (file_exists(__DIR__ . '/classes/' . $class_name . '.php')) {
-      require __DIR__ . '/classes/' . $class_name . '.php';
+  function __autoload($className) {
+    //debug($className);
+    
+    $classPath = explode('\\', $className);
+    $classPath[0] = __DIR__ . DIRECTORY_SEPARATOR . '..';
+    $classPath = implode(DIRECTORY_SEPARATOR, $classPath) . '.php';
+    //debug($classPath);
+    if (file_exists($classPath)) {
+      require $classPath;
     }
+
+//    if (file_exists(__DIR__ . '/classes/controller/' . $class_name . '.php')) {
+//      require __DIR__ . '/classes/controller/' . $class_name . '.php';
+//
+//    } elseif (file_exists(__DIR__ . '/classes/model/' . $class_name . '.php')) {
+//      require __DIR__ . '/classes/model/' . $class_name . '.php';
+//
+//    } elseif (file_exists(__DIR__ . '/classes/' . $class_name . '.php')) {
+//      require __DIR__ . '/classes/' . $class_name . '.php';
+//    }
   }

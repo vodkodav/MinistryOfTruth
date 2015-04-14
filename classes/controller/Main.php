@@ -1,9 +1,7 @@
 <?php
-  /**
-   * Абстрактнй конроллер
-   */
-
-  abstract class Controller {
+  namespace App\Classes\Controller;
+  
+  abstract class Main {
     /*
      * Метод для выбора дейстия по умолчанию
      */

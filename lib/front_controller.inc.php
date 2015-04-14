@@ -13,14 +13,14 @@
    */
   if ( isset($_GET['page'])
         and !empty($_GET['page'])
-        and class_exists(filter_input(INPUT_GET, 'page', FILTER_SANITIZE_STRING) . 'Controller') ) {
+        and class_exists('App\\Classes\\Controller\\' . filter_input(INPUT_GET, 'page', FILTER_SANITIZE_STRING)) ) {
     $page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_STRING);
   } else {
-    $page = 'news';
+    $page = 'News';
   }
 
   // Задаем имя контроллера
-  $controller = $page . 'Controller';
+  $controller = 'App\\Classes\\Controller\\' . $page;
   // Подключам нужный контроллер
   $controller = new $controller();
 
@@ -37,8 +37,8 @@
 
   try {
     $controller->$action();
-  } catch (E404Ecxeption $e) {
-    $view = new View('error.php');
+  } catch (App\Classes\E404Ecxeption $e) {
+    $view = new App\Classes\View('error.php');
     $view->addHeader($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
     $view->message = $e->getMessage();
     $view->display();

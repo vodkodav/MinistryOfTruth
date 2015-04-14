@@ -1,15 +1,12 @@
 <?php
-  /**
-   * Description of Logger
-   *
-   * @author Sasha
-   */
+	namespace App\Classes;
+  
   class Logger {
     private $logFile;         // Файл для записи событий
     //private $event = array(); // Массив содержит собитие
     
     public function __construct() {
-      $this->logFile = __DIR__ . '/../../events.txt';
+      $this->logFile = __DIR__ . '/../events.txt';
     }
     
     public function readAllEvents() {
